@@ -22,7 +22,10 @@ public class ListaDeOfertasHosp {
             a1.setCargo("Aluno");
             a1.setEmail("aluno@aluno.com");
             int p1 = 1;
+            Intercambista i1 = new Intercambista("Antonio");
+            i1.setEmail("antonio@antonio.com");
             OfertaHosp v1 = new OfertaHosp(a1, p1);
+            v1.adicionaInteressado(i1);
             Anfitriao a2 = new Anfitriao("Joao");
             a2.setCargo("Professor");
             a2.setEmail("professor@professor.com");

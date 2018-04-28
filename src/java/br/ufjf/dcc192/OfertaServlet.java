@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Ramon Larivoir
  */
-@WebServlet(name = "OfertaServlet", urlPatterns = {"/index.html", "/nova-oferta.html", "/lista-oferta.html", "/adicionar-interessado.html", "/lista-interessados.html", "/anfitriao.html"})
+@WebServlet(name = "OfertaServlet", urlPatterns = {"/index.html", "/nova-oferta.html", "/lista-oferta.html", "/adicionar-interessado.html", "/lista-interessados.html", "/anfitriao.html", "/intercambista.html"})
 public class OfertaServlet extends HttpServlet {
 
     @Override
@@ -36,6 +36,8 @@ public class OfertaServlet extends HttpServlet {
            listaInteressados(request, response);
        } else if("/anfitriao.html".equals(request.getServletPath())) {
            exibeAnfitriao(request, response);
+       } else if("/intercambista.html".equals(request.getServletPath())) {
+           exibeIntercambista(request, response);
        }
        
     }
@@ -89,15 +91,21 @@ public class OfertaServlet extends HttpServlet {
     
     protected void listaInteressados(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer idOfer = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("idOfer", idOfer);
         List<Intercambista> inters = ListaDeOfertasHosp.getInstance().get(idOfer).getListaInteressados();
         request.setAttribute("inters", inters);
-        
-        RequestDispatcher despachante = request.getRequestDispatcher("/WEB-INF/lista-interessados.jsp");
-        despachante.forward(request, response);
+        if(inters == null) {
+            RequestDispatcher despachante = request.getRequestDispatcher("/WEB-INF/sem-interessados.jsp");
+            despachante.forward(request, response);
+        } else { 
+            RequestDispatcher despachante = request.getRequestDispatcher("/WEB-INF/lista-interessados.jsp");
+            despachante.forward(request, response);
+        }
     }
 
     protected void exibeAnfitriao(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer idOfer = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("idOfer", idOfer);
         Anfitriao anf = ListaDeOfertasHosp.getInstance().get(idOfer).getAnfitriao();
         String nome = anf.getNome();
         String cargo = anf.getCargo();
@@ -107,6 +115,19 @@ public class OfertaServlet extends HttpServlet {
         request.setAttribute("email", email);
         
         RequestDispatcher despachante = request.getRequestDispatcher("/WEB-INF/anfitriao.jsp");
+        despachante.forward(request, response);
+    }
+    
+    protected void exibeIntercambista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer idOfer = Integer.parseInt(request.getParameter("of"));
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Intercambista inter = ListaDeOfertasHosp.getInstance().get(idOfer).getListaInteressados().get(id);
+        String nome = inter.getNome();
+        String email = inter.getEmail();
+        request.setAttribute("nome", nome);
+        request.setAttribute("email", email);
+        
+        RequestDispatcher despachante = request.getRequestDispatcher("/WEB-INF/intercambista.jsp");
         despachante.forward(request, response);
     }
 }

@@ -14,7 +14,9 @@ public class ListaDeIntercambista {
         if(inters == null) {
             inters = new ArrayList<>();
             Intercambista i1 = new Intercambista("Antonio");
+            i1.setEmail("antonio@antonio.com");
             Intercambista i2 = new Intercambista("Mário");
+            i2.setEmail("mario@mario.com");
             
             inters.add(i1);
             inters.add(i2);

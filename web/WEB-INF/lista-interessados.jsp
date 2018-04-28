@@ -18,15 +18,20 @@
             <thead>
                 <tr>
                     <th>Nome</th>
+                    <th>Ação</th>
                 </tr>
             </thead>
             <tbody>
-                <%for (Intercambista inter : (List<Intercambista>)request.getAttribute("inters")) { %>
+                <%
+                    int i =0;
+                    for (Intercambista inter : (List<Intercambista>)request.getAttribute("inters")) { %>
                 <tr>
                     <td><%=inter.getNome()%></td>
+                    <td><a href="intercambista.html?id=<%=i%>&of=<%=request.getAttribute("idOfer")%>">Visualizar Intercambista</a></td>
                 </tr>     
-                <%    }  %>
+                <%  i++;  }  %>
             </tbody>
         </table>
+        <a href="index.html"><input type="button" value="Voltar"></a>
     </body>
 </html>
